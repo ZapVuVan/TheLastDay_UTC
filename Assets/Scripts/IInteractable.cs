@@ -5,6 +5,7 @@ using UnityEngine;
 public enum InteractType
 {
     Open,
+    Close,
     Hide,
     Refill,
     Pickup,

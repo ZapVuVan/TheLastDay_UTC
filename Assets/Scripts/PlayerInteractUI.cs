@@ -35,6 +35,7 @@ public class PlayerInteractUI : MonoBehaviour
         switch (type)
         {
             case InteractType.Open: return "Mở";
+            case InteractType.Close: return "Đóng";
             case InteractType.Hide: return "Trốn vào";
             case InteractType.Refill: return "Refill Oxy";
             case InteractType.Pickup: return "Nhặt";
