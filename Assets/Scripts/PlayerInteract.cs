@@ -13,6 +13,7 @@ public class PlayerInteract : MonoBehaviour
     private StarterAssetsInputs starterAssetsInputs;
     private IInteractable currentInteractable;
 
+    public event EventHandler OnInteractableChanged;
     private void Start()
     {
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
@@ -46,29 +47,28 @@ public class PlayerInteract : MonoBehaviour
     private void HandleInteractCheck()
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        IInteractable newInteractable = null;
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactLayerMask))
         {
-            // Ch? update khi nhìn vào object khác
             if (hit.collider.TryGetComponent(out IInteractable interactable))
-            {
-                if (interactable != currentInteractable)
-                    SetCurrentInteractable(interactable);
-            }
-            else
-            {
-                SetCurrentInteractable(null);
-            }
+                newInteractable = interactable;
         }
-        else
+
+        if (newInteractable != currentInteractable)
         {
-            SetCurrentInteractable(null);
+            currentInteractable = newInteractable;
+            OnInteractableChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    private void SetCurrentInteractable(IInteractable interactable)
+    public bool HasInteractable()
     {
-        currentInteractable = interactable;
+        return currentInteractable != null;
+    }
+    public IInteractable GetCurrentInteractable()
+    {
+        return currentInteractable;
     }
 
 
