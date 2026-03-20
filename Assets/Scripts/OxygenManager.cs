@@ -48,4 +48,13 @@ public class OxygenManager : MonoBehaviour
         return currentOxygen / maxOxygen;
     }
 
+    public void RefillOxygen(float amount)
+    {
+        currentOxygen += amount;
+        currentOxygen = Mathf.Clamp(currentOxygen, 0f, maxOxygen);
+        OnOxygenChanged?.Invoke(this, new OnOxygenChangedEventArgs
+        {
+            oxygenNormalized = currentOxygen / maxOxygen
+        });
+    }
 }

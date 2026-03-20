@@ -13,10 +13,7 @@ public class OxygenBarUI : MonoBehaviour
 
     private void Start()
     {
-        // L?ng nghe event — ?úng ki?u CodeMonkey
         OxygenManager.Instance.OnOxygenChanged += OxygenManager_OnOxygenChanged;
-
-        // Set giá tr? ban ??u
         UpdateBar(1f);
     }
 
@@ -36,7 +33,6 @@ public class OxygenBarUI : MonoBehaviour
         // C?p nh?t fillAmount
         barFill.fillAmount = normalizedValue;
 
-        // ??i màu theo ng??ng
         if (normalizedValue > 0.5f)
             barFill.color = colorFull;
         else if (normalizedValue > 0.25f)

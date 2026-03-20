@@ -36,9 +36,10 @@ public class PlayerInteractUI : MonoBehaviour
         {
             case InteractType.Open: return "Mở";
             case InteractType.Close: return "Đóng";
-            case InteractType.Hide: return "Trốn vào";
+            case InteractType.Hide: return "Trốn vào";  
             case InteractType.Refill: return "Refill Oxy";
             case InteractType.Pickup: return "Nhặt";
+            case InteractType.Drop: return "Bỏ";
             case InteractType.Activate: return "Kích hoạt";
             default: return "Tương tác";
         }

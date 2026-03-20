@@ -23,7 +23,6 @@ public class GameInput : MonoBehaviour
         Instance = this;
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
-
         playerInputActions.Player.Interact.performed += Interact_performed;
 
 

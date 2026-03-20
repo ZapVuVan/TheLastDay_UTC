@@ -9,6 +9,7 @@ public enum InteractType
     Hide,
     Refill,
     Pickup,
+    Drop,
     Activate,
 }
 public interface IInteractable
