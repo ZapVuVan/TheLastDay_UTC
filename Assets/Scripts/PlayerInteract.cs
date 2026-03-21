@@ -1,19 +1,36 @@
-using StarterAssets;
+﻿using StarterAssets;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
+    public static PlayerInteract Instance { get; private set; } // thêm
+
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float interactDistance = 2f;
     [SerializeField] private LayerMask interactLayerMask;
 
     private StarterAssetsInputs starterAssetsInputs;
     private IInteractable currentInteractable;
-
+     
     public event EventHandler OnInteractableChanged;
+
+    // Thêm event mới cho highlight
+    public event EventHandler<OnSelectedInteractableChangedEventArgs> OnSelectedInteractableChanged;
+    public class OnSelectedInteractableChangedEventArgs : EventArgs
+    {
+        public IInteractable selectedInteractable;
+    }
+
+    private void Awake()
+    {
+        // Thêm singleton
+        if (Instance != null && Instance != this) { Debug.LogError($"Duplicate PlayerInteract! Destroying {gameObject.name}");  Destroy(gameObject); return; }
+        Instance = this;
+        Debug.Log($"PlayerInteract Instance set on {gameObject.name}");
+        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+    }
+
     private void Start()
     {
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
@@ -26,17 +43,9 @@ public class PlayerInteract : MonoBehaviour
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
+        Debug.Log($"Interact fired! currentInteractable: {currentInteractable}");
         if (currentInteractable != null)
-        {
             currentInteractable.Interact();
-        }
-    }
-
-
-    private void Awake()
-    {
-        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
-
     }
 
     private void Update()
@@ -50,26 +59,23 @@ public class PlayerInteract : MonoBehaviour
         IInteractable newInteractable = null;
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactLayerMask))
-        {
             if (hit.collider.TryGetComponent(out IInteractable interactable))
                 newInteractable = interactable;
-        }
 
         if (newInteractable != currentInteractable)
         {
             currentInteractable = newInteractable;
+
+            // Fire cả 2 event
             OnInteractableChanged?.Invoke(this, EventArgs.Empty);
+            OnSelectedInteractableChanged?.Invoke(this,
+                new OnSelectedInteractableChangedEventArgs
+                {
+                    selectedInteractable = currentInteractable
+                });
         }
     }
 
-    public bool HasInteractable()
-    {
-        return currentInteractable != null;
-    }
-    public IInteractable GetCurrentInteractable()
-    {
-        return currentInteractable;
-    }
-
-
+    public bool HasInteractable() => currentInteractable != null;
+    public IInteractable GetCurrentInteractable() => currentInteractable;
 }

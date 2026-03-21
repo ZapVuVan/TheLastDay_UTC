@@ -17,7 +17,9 @@ public class ChessInteract : MonoBehaviour, IInteractable
     }
     public void Interact()
     {
+        Debug.Log("Chess Interact called!"); // có log này không?
         isOpen = !isOpen;
+        Debug.Log($"animator: {animator}"); // null không?
         animator.SetBool(OPEN_ANIMATION, isOpen);
     }
     public InteractType GetInteractType()
