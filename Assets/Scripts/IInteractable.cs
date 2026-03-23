@@ -10,6 +10,7 @@ public enum InteractType
     Refill,
     Pickup,
     Drop,
+    Read,
     Activate,
 }
 public interface IInteractable

@@ -170,6 +170,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Note"",
+            ""id"": ""1411d388-b3db-4013-ad33-c2311b442656"",
+            ""actions"": [
+                {
+                    ""name"": ""QuitNote"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3ac74a5-cd77-44b4-b6b7-361aa15a9604"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e02fd323-a72b-40d4-b95b-d567c24e5b94"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuitNote"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -183,6 +211,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SelectSlot4 = m_Player.FindAction("SelectSlot4", throwIfNotFound: true);
         m_Player_SelectSlot5 = m_Player.FindAction("SelectSlot5", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
+        // Note
+        m_Note = asset.FindActionMap("Note", throwIfNotFound: true);
+        m_Note_QuitNote = m_Note.FindAction("QuitNote", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -334,6 +365,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Note
+    private readonly InputActionMap m_Note;
+    private List<INoteActions> m_NoteActionsCallbackInterfaces = new List<INoteActions>();
+    private readonly InputAction m_Note_QuitNote;
+    public struct NoteActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public NoteActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuitNote => m_Wrapper.m_Note_QuitNote;
+        public InputActionMap Get() { return m_Wrapper.m_Note; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NoteActions set) { return set.Get(); }
+        public void AddCallbacks(INoteActions instance)
+        {
+            if (instance == null || m_Wrapper.m_NoteActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_NoteActionsCallbackInterfaces.Add(instance);
+            @QuitNote.started += instance.OnQuitNote;
+            @QuitNote.performed += instance.OnQuitNote;
+            @QuitNote.canceled += instance.OnQuitNote;
+        }
+
+        private void UnregisterCallbacks(INoteActions instance)
+        {
+            @QuitNote.started -= instance.OnQuitNote;
+            @QuitNote.performed -= instance.OnQuitNote;
+            @QuitNote.canceled -= instance.OnQuitNote;
+        }
+
+        public void RemoveCallbacks(INoteActions instance)
+        {
+            if (m_Wrapper.m_NoteActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(INoteActions instance)
+        {
+            foreach (var item in m_Wrapper.m_NoteActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_NoteActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public NoteActions @Note => new NoteActions(this);
     public interface IPlayerActions
     {
         void OnInteract(InputAction.CallbackContext context);
@@ -343,5 +420,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSelectSlot4(InputAction.CallbackContext context);
         void OnSelectSlot5(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+    }
+    public interface INoteActions
+    {
+        void OnQuitNote(InputAction.CallbackContext context);
     }
 }

@@ -148,6 +148,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Note",
+            "id": "1411d388-b3db-4013-ad33-c2311b442656",
+            "actions": [
+                {
+                    "name": "QuitNote",
+                    "type": "Button",
+                    "id": "d3ac74a5-cd77-44b4-b6b7-361aa15a9604",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e02fd323-a72b-40d4-b95b-d567c24e5b94",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuitNote",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

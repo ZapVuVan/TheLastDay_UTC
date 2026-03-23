@@ -2,6 +2,8 @@ using StarterAssets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +13,7 @@ public class GameInput : MonoBehaviour
 
     public event EventHandler OnInteractAction;
     public event EventHandler OnDropAction;
+    public event EventHandler OnQuitNoteAction;
 
     public event EventHandler<OnSlotChangedEventArgs> OnSlotChanged;
     public class OnSlotChangedEventArgs : EventArgs
@@ -19,9 +22,10 @@ public class GameInput : MonoBehaviour
     }
 
     private PlayerInputActions playerInputActions;
+    private InputActionAsset inputActionAsset;
 
     private void Awake()
-    {   
+    {
         Instance = this;
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
@@ -40,11 +44,12 @@ public class GameInput : MonoBehaviour
             => OnSlotChanged?.Invoke(this, new OnSlotChangedEventArgs { slotIndex = 3 });
         playerInputActions.Player.SelectSlot5.performed += ctx
             => OnSlotChanged?.Invoke(this, new OnSlotChangedEventArgs { slotIndex = 4 });
+        playerInputActions.Note.QuitNote.performed += ctx
+            => OnQuitNoteAction?.Invoke(this, EventArgs.Empty);
 
 
 
     }
-
 
     private void OnDestroy()
     {
@@ -59,4 +64,20 @@ public class GameInput : MonoBehaviour
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
+
+    public void DisablePlayerActions()
+    {
+        playerInputActions.Player.Disable();
+        playerInputActions.Note.Enable();
+    }
+
+    public void EnablePlayerActions()
+    {
+        playerInputActions.Player.Enable();
+        playerInputActions.Note.Disable();
+    }
 }
+
+
+
+

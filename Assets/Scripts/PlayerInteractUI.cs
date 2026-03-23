@@ -41,6 +41,7 @@ public class PlayerInteractUI : MonoBehaviour
             case InteractType.Pickup: return "Nhặt";
             case InteractType.Drop: return "Bỏ";
             case InteractType.Activate: return "Kích hoạt";
+            case InteractType.Read: return "Đọc";
             default: return "Tương tác";
         }
     }
