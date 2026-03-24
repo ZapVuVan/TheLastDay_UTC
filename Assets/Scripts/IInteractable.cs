@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum InteractType
 {
+    None,
     Open,
     Close,
     Hide,

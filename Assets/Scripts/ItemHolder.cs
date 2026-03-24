@@ -21,6 +21,8 @@ public class ItemHolder : MonoBehaviour
 
     private void GameInput_OnDropAction(object sender, EventArgs e)
     {
+        Debug.Log("vut xuong");
+        
         DropActiveItem();
     }
 

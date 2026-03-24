@@ -9,7 +9,9 @@ public class InteractableHighlight : MonoBehaviour, IHighlightable
 
     private void Awake()
     {
-        outline = gameObject.AddComponent<Outline>();
+        outline = GetComponent<Outline>();
+        if (outline == null)
+            outline = gameObject.AddComponent<Outline>();
         outline.OutlineMode = Outline.Mode.OutlineAll;
         outline.OutlineColor = outlineColor;
         outline.OutlineWidth = outlineWidth;

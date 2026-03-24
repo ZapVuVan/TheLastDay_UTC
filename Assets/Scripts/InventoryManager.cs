@@ -71,6 +71,25 @@ public class InventoryManager : MonoBehaviour
     {
         if (slots[activeSlotIndex].IsEmpty) return false;
 
+        // Chỉ clear data — KHÔNG đụng vào itemObject
+        // ItemHolder tự lo việc drop/destroy
+        slots[activeSlotIndex].Clear();
+        OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+        OnActiveSlotChanged?.Invoke(this, EventArgs.Empty);
+        return true;
+    }
+
+    public bool RemoveAndHideActiveItem()
+    {
+        if (slots[activeSlotIndex].IsEmpty) return false;
+
+        GameObject itemObject = slots[activeSlotIndex].itemObject;
+        if (itemObject != null)
+        {
+            itemObject.transform.SetParent(null);
+            itemObject.SetActive(false); // ẩn thay vì destroy
+        }
+
         slots[activeSlotIndex].Clear();
         OnInventoryChanged?.Invoke(this, EventArgs.Empty);
         OnActiveSlotChanged?.Invoke(this, EventArgs.Empty);
