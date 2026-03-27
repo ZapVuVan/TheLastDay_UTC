@@ -30,8 +30,7 @@ public class PasswordChessUI : MonoBehaviour
         closeButton.onClick.AddListener(Hide);
     }
 
-    // ─────────────────────────────────────────────
-    // ChessInteract truyền SO vào đây khi mở UI
+
     public void Show(ChestPasswordSO passwordData)
     {
         correctPassword = passwordData.Password;
@@ -40,6 +39,10 @@ public class PasswordChessUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         GameInput.Instance.DisablePlayerActions();
+
+        Debug.Log($"Cursor visible: {Cursor.visible}");
+        Debug.Log($"Cursor lockState: {Cursor.lockState}");
+        Debug.Log($"Panel active: {panel.activeSelf}");
     }
 
     public void Hide()
