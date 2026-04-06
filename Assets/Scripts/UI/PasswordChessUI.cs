@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 public class PasswordChessUI : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PasswordChessUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] digitTexts;
     [SerializeField] private TextMeshProUGUI feedbackText;
     [SerializeField] private Button enterButton;
-    [SerializeField] private Button closeButton;
+    [SerializeField] private Button deleteButton;
 
     private string correctPassword;
     private string currentInput = "";
@@ -21,16 +22,34 @@ public class PasswordChessUI : MonoBehaviour
     public event Action OnPasswordCorrect;
 
     // ─────────────────────────────────────────────
+    private void Start()
+    {
+        GameInput.Instance.OnQuitNoteAction += Instance_OnQuitNoteAction;
+        
+    }
+
+    private void Instance_OnQuitNoteAction(object sender, EventArgs e)
+    {
+        if (panel.activeSelf)
+        {
+            Hide();
+        }
+    }
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         panel.SetActive(false);
         enterButton.onClick.AddListener(OnEnterPressed);
-        closeButton.onClick.AddListener(Hide);
+        deleteButton.onClick.AddListener(OnDeletePressed);
+
     }
 
-
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnQuitNoteAction -= Instance_OnQuitNoteAction;
+    }
     public void Show(ChestPasswordSO passwordData)
     {
         correctPassword = passwordData.Password;

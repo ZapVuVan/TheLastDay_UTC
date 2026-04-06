@@ -54,9 +54,6 @@ public class ItemHolder : MonoBehaviour
         // Tách khỏi GrabPoint
         itemObject.transform.SetParent(null);
 
-        // Reset scale về ban đầu
-        itemObject.transform.localScale = Vector3.one;
-
         // Bật lại physics → rơi xuống đất
         if (itemObject.TryGetComponent(out Rigidbody rb))
         {

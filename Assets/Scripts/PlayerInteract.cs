@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    public static PlayerInteract Instance { get; private set; } // thêm
+    public static PlayerInteract Instance { get; private set; }
 
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float interactDistance = 2f;
     [SerializeField] private LayerMask interactLayerMask;
 
-    private StarterAssetsInputs starterAssetsInputs;
     private IInteractable currentInteractable;
      
     public event EventHandler OnInteractableChanged;
 
-    // Thêm event mới cho highlight
     public event EventHandler<OnSelectedInteractableChangedEventArgs> OnSelectedInteractableChanged;
     public class OnSelectedInteractableChangedEventArgs : EventArgs
     {
@@ -24,16 +22,15 @@ public class PlayerInteract : MonoBehaviour
 
     private void Awake()
     {
-        // Thêm singleton
         if (Instance != null && Instance != this) { Debug.LogError($"Duplicate PlayerInteract! Destroying {gameObject.name}");  Destroy(gameObject); return; }
         Instance = this;
-        Debug.Log($"PlayerInteract Instance set on {gameObject.name}");
-        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
     }
 
     private void Start()
     {
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnDestroy()
