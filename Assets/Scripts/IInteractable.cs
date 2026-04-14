@@ -13,6 +13,7 @@ public enum InteractType
     Drop,
     Read,
     Activate,
+    Craft,
 }
 public interface IInteractable
 {

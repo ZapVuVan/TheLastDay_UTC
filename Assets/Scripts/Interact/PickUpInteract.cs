@@ -30,4 +30,6 @@ public class PickUpInteract : MonoBehaviour, IInteractable
     }
 
     public InteractType GetInteractType() => InteractType.Pickup;
+
+    public ItemDataSO GetItemDataSO() => itemData;
 }

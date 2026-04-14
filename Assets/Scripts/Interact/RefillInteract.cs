@@ -5,7 +5,7 @@ using UnityEngine;
 public class RefillInteract : MonoBehaviour,IInteractable
 {
     private OxygenBarUI oxygenBarUI;
-    [SerializeField] private float refillAmount = 10f;
+    [SerializeField] private float refillAmount = 200f;
     public void Interact()
     {
         OxygenManager.Instance.RefillOxygen(refillAmount);

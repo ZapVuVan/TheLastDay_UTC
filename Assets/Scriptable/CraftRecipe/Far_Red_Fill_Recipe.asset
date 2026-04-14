@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad2c59a2c9321d44abf5762d1566c53, type: 3}
+  m_Name: Far_Red_Fill_Recipe
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 162c7dc1f37a5e349a327680beb3aea2, type: 3}
+  inputItemDataSOList:
+  - {fileID: 11400000, guid: b73474633c8aec146bcb852a5f7de657, type: 2}
+  - {fileID: 11400000, guid: 75c725a64a8b7104a82e19e74fffda20, type: 2}
+  - {fileID: 11400000, guid: 3086de9e8c2f9fd43ac9abbf600ccecb, type: 2}
+  outputItemDataSO: {fileID: 11400000, guid: cd9656ff536ae984193ec28e1ee71dcc, type: 2}

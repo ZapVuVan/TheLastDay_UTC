@@ -22,6 +22,8 @@ public class GameInput : MonoBehaviour
     public Vector2 move => playerInputActions.Player.Move.ReadValue<Vector2>();
     public Vector2 look => playerInputActions.Player.Look.ReadValue<Vector2>() * mouseSensitivity;
     public bool sprint => playerInputActions.Player.Sprint.IsPressed();
+
+    public bool walk => playerInputActions.Player.Walk.IsPressed();
     public bool jump
     {
         get => _jump;

@@ -40,7 +40,6 @@ public class PlayerInteract : MonoBehaviour
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        Debug.Log($"Interact fired! currentInteractable: {currentInteractable}");
         if (currentInteractable != null)
             currentInteractable.Interact();
     }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemDataSO : ScriptableObject
 {
     public Sprite icon;
+    public GameObject prefab;
 
     [Header("Hold settings")]
     public Vector3 holdPosition = new Vector3(0.3f, -0.3f, 0.5f);

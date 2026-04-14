@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad2c59a2c9321d44abf5762d1566c53, type: 3}
+  m_Name: PoisonBall_Recipe
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 49b0d7058933c10408f7be952de4755f, type: 3}
+  inputItemDataSOList:
+  - {fileID: 11400000, guid: cd9656ff536ae984193ec28e1ee71dcc, type: 2}
+  - {fileID: 11400000, guid: c6d72a34511b453478905afe8c33139a, type: 2}
+  - {fileID: 11400000, guid: 183df657c58a7904088b7f98f9242bb4, type: 2}
+  - {fileID: 11400000, guid: 3be9bf9e518ab4d4584d82f7061282d1, type: 2}
+  outputItemDataSO: {fileID: 11400000, guid: ab9732de246869942b19b39a46b3aa2d, type: 2}
