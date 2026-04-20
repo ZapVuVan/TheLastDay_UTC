@@ -1,6 +1,9 @@
+using UnityEngine;
+
 public class BossPatrolState : BossBaseState
 {
-    private int pointDistance = 0;
+    private int _pointCount = 0;
+
     public override void EnterState(BossAIController boss)
     {
         boss.animatorBoss.SetBool("IsWalking", true);
@@ -30,11 +33,12 @@ public class BossPatrolState : BossBaseState
             }
 
             boss.agent.SetDestination(boss.wayPoints[boss.currentWayPointIndex].position);
-            pointDistance++;
-            if(pointDistance >= 3)
+
+            _pointCount++;
+            if (_pointCount >= 3)
             {
+                _pointCount = 0;
                 boss.bossSound.PlayRoar();
-                pointDistance = 0;
             }
         }
 

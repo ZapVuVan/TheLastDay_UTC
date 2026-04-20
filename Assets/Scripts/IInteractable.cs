@@ -14,6 +14,8 @@ public enum InteractType
     Read,
     Activate,
     Craft,
+    Vent,
+    Radio,
 }
 public interface IInteractable
 {

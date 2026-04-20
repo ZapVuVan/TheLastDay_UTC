@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,7 +24,7 @@ public class BossAIController : MonoBehaviour
 
     [Header("Chase")]
     [SerializeField] public float lostPlayerWaitTime = 1f;
-    [HideInInspector] public float lostPlayerTimer = 1f;
+    [HideInInspector] public float lostPlayerTimer = 0f;
 
     [Header("Search")]
     [SerializeField] public float searchRadius = 4f;
@@ -45,8 +46,9 @@ public class BossAIController : MonoBehaviour
     [HideInInspector] public BossStunState stunState;
 
     public BossBaseState currentState;
+    [HideInInspector] public BossSound bossSound;
+    [HideInInspector] public Radio activeRadio;
 
-    public BossSound bossSound;
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -62,7 +64,6 @@ public class BossAIController : MonoBehaviour
 
     void Start()
     {
-
         SoundManager.Instance.OnSoundEmitted += HearSound;
         ChangeState(patrolState);
     }
@@ -97,24 +98,49 @@ public class BossAIController : MonoBehaviour
     private void HearSound(SoundDataSO data, Vector3 soundPosition)
     {
         if (data.noiseValue < noiseThreshold) return;
-        if (currentState == stunState || currentState == chaseState) return;
+        if (currentState == stunState) return;
+
+        // Check radio TRƯỚC mọi thứ - kể cả đang chase player
+        Collider[] hits = Physics.OverlapSphere(soundPosition, 1f);
+        foreach (var hit in hits)
+        {
+            Radio radio = hit.GetComponent<Radio>();
+            if (radio != null)
+            {
+                SetActiveRadio(radio);
+                return;
+            }
+        }
+
+        // Các logic dưới chỉ chạy nếu KHÔNG phải radio
+        if (activeRadio != null) return;
+        if (currentState == chaseState) return;
 
         float dist = Vector3.Distance(transform.position, soundPosition);
-
-        if (dist <= hearRadiusClose)
-        {
-            ReactClose(soundPosition);
-        }
+        if (dist <= hearRadiusClose) ReactClose(soundPosition);
         else if (dist <= hearRadiusMedium)
         {
             if (data.noiseValue >= 0.3f) ReactMedium(soundPosition);
-            else if (Random.Range(0f, 1f) < 0.7f) ReactFar(soundPosition);
+            else if (UnityEngine.Random.Range(0f, 1f) < 0.7f) ReactFar(soundPosition);
         }
         else if (dist <= hearRadiusFar)
         {
             if (data.noiseValue >= 0.5f) ReactFar(soundPosition);
-            else if (Random.Range(0f, 1f) < 0.4f) ReactFar(soundPosition);
+            else if (UnityEngine.Random.Range(0f, 1f) < 0.4f) ReactFar(soundPosition);
         }
+    }
+
+    public void SetActiveRadio(Radio radio)
+    {
+        activeRadio = radio;
+        lastSeenPosition = radio.transform.position;
+        agent.SetDestination(radio.transform.position);
+        ChangeState(chaseState);
+    }
+
+    public void ClearActiveRadio()
+    {
+        activeRadio = null;
     }
 
     public void ReactClose(Vector3 pos)
@@ -127,7 +153,7 @@ public class BossAIController : MonoBehaviour
     public void ReactMedium(Vector3 pos)
     {
         lastSeenPosition = pos;
-        Vector3 offset = Random.insideUnitSphere * 3f;
+        Vector3 offset = UnityEngine.Random.insideUnitSphere * 3f;
         offset.y = 0;
         Vector3 target = pos + offset;
 
@@ -141,7 +167,7 @@ public class BossAIController : MonoBehaviour
 
     public void ReactFar(Vector3 pos)
     {
-        if (Random.Range(0f, 1f) <= 0.6f)
+        if (UnityEngine.Random.Range(0f, 1f) <= 0.6f)
         {
             lastSeenPosition = pos;
             agent.SetDestination(pos);
@@ -165,7 +191,7 @@ public class BossAIController : MonoBehaviour
 
     public Vector3 GetRandomSearchPoint()
     {
-        Vector3 randomDir = Random.insideUnitSphere * searchRadius;
+        Vector3 randomDir = UnityEngine.Random.insideUnitSphere * searchRadius;
         randomDir.y = 0;
         Vector3 searchTarget = lastSeenPosition + randomDir;
 
