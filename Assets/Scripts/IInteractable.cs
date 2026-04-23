@@ -16,6 +16,7 @@ public enum InteractType
     Craft,
     Vent,
     Radio,
+    Lever,
 }
 public interface IInteractable
 {

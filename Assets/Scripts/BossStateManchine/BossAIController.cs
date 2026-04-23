@@ -44,6 +44,8 @@ public class BossAIController : MonoBehaviour
     [HideInInspector] public BossAttackState attackState;
     [HideInInspector] public BossSearchState searchState;
     [HideInInspector] public BossStunState stunState;
+    [HideInInspector] public BossDieState dieState;
+    [HideInInspector] public bool isPoisoned = false;
 
     public BossBaseState currentState;
     [HideInInspector] public BossSound bossSound;
@@ -60,6 +62,7 @@ public class BossAIController : MonoBehaviour
         attackState = new BossAttackState();
         searchState = new BossSearchState();
         stunState = new BossStunState();
+        dieState = new BossDieState();
     }
 
     void Start()
@@ -70,7 +73,13 @@ public class BossAIController : MonoBehaviour
 
     void Update()
     {
+        if (isPoisoned && currentState != dieState)
+        {
+            ChangeState(dieState);
+            return;
+        }
         currentState?.UpdateState(this);
+
     }
 
     public void ChangeState(BossBaseState newState)
@@ -199,6 +208,11 @@ public class BossAIController : MonoBehaviour
             return hit.position;
 
         return lastSeenPosition;
+    }
+
+    public void SetPoisoned()
+    {
+        isPoisoned = true;
     }
 
     void OnDrawGizmos()
