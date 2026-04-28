@@ -9,9 +9,9 @@ public class OxygenManager : MonoBehaviour
 
     [SerializeField] private float maxOxygen = 150f;
     [SerializeField] private float drainRate = 1f;
-
+    [SerializeField] private ReasonDieSO oxyReason;
     private float currentOxygen;
-
+    private bool isDead = false;
     public event EventHandler<OnOxygenChangedEventArgs> OnOxygenChanged;
 
      public class OnOxygenChangedEventArgs : EventArgs
@@ -19,7 +19,6 @@ public class OxygenManager : MonoBehaviour
         public float oxygenNormalized; // 0 = hết, 1 = đầy
     }
 
-    public event EventHandler OnOxygenEmpty;
 
     private void Awake()
     {
@@ -29,6 +28,10 @@ public class OxygenManager : MonoBehaviour
 
     private void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
         currentOxygen -= drainRate * Time.deltaTime;
         currentOxygen = Mathf.Clamp(currentOxygen, 0f, maxOxygen);
 
@@ -37,16 +40,18 @@ public class OxygenManager : MonoBehaviour
             oxygenNormalized = currentOxygen / maxOxygen
         });
 
-        if(currentOxygen < 0f)
+        if(currentOxygen <= 0f)
         {
-            OnOxygenEmpty?.Invoke(this, EventArgs.Empty);
+            isDead = true;
+            Debug.Log("Player died due to lack of oxygen.");
+            PlayerDieManager.Instance.PlayerDie(oxyReason);
         }
     }
 
-    public float GetOxygenNormalized()
-    {
-        return currentOxygen / maxOxygen;
-    }
+    //public float GetOxygenNormalized()
+    //{
+    //    return currentOxygen / maxOxygen;
+    //}
 
     public void RefillOxygen(float amount)
     {

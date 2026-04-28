@@ -15,7 +15,7 @@ public class BossAIController : MonoBehaviour
     [SerializeField] public float visualRadius = 20f;
     [SerializeField] public float visualAngle = 200f;
     [SerializeField] public LayerMask obstacleLayer;
-    [SerializeField] public float attackRange = 2f;
+    [SerializeField] public float attackRange = 3f;
 
     [Header("Patrol")]
     [SerializeField] public List<Transform> wayPoints = new List<Transform>();
@@ -50,6 +50,16 @@ public class BossAIController : MonoBehaviour
     public BossBaseState currentState;
     [HideInInspector] public BossSound bossSound;
     [HideInInspector] public Radio activeRadio;
+
+    [SerializeField] public ReasonDieSO reasonDieBoss;
+
+    public static event Action OnBossDied;
+    public void SetPoisoned()
+    {
+        if (isPoisoned) return;
+        isPoisoned = true;
+        OnBossDied?.Invoke();
+    }
 
     void Awake()
     {
@@ -121,7 +131,6 @@ public class BossAIController : MonoBehaviour
             }
         }
 
-        // Các logic dưới chỉ chạy nếu KHÔNG phải radio
         if (activeRadio != null) return;
         if (currentState == chaseState) return;
 
@@ -208,11 +217,6 @@ public class BossAIController : MonoBehaviour
             return hit.position;
 
         return lastSeenPosition;
-    }
-
-    public void SetPoisoned()
-    {
-        isPoisoned = true;
     }
 
     void OnDrawGizmos()

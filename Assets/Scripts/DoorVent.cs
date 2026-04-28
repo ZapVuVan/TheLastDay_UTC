@@ -33,8 +33,4 @@ public class DoorVent : MonoBehaviour
         obstacle.enabled = !isActive;
     }
 
-    public bool GetIsOpen()
-    {
-        return isOpen;
-    }
 }   

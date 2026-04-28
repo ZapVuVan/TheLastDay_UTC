@@ -10,7 +10,6 @@ public class BossChaseState : BossBaseState
 
     public override void UpdateState(BossAIController boss)
     {
-        // Đang đến radio → ưu tiên tuyệt đối
         if (boss.activeRadio != null)
         {
             boss.agent.SetDestination(boss.activeRadio.transform.position);
@@ -25,15 +24,22 @@ public class BossChaseState : BossBaseState
             return;
         }
 
-        // Chase player bình thường
         if (boss.CanSee())
         {
+            Debug.Log("Player spotted! Chasing...");
             boss.lostPlayerTimer = 0f;
             boss.lastSeenPosition = boss.player.position;
             boss.agent.SetDestination(boss.player.position);
 
-            if (Vector3.Distance(boss.transform.position, boss.player.position) <= boss.attackRange)
+            float dist = Vector3.Distance(boss.transform.position, boss.player.position);
+            Debug.Log($"Distance to player: {dist} | Attack range: {boss.attackRange}");
+
+            if (dist <= boss.attackRange)
+            {
                 boss.ChangeState(boss.attackState);
+                return;
+            }
+
         }
         else
         {

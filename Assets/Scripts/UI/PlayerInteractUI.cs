@@ -43,6 +43,11 @@ public class PlayerInteractUI : MonoBehaviour
             case InteractType.Activate: return "Kích hoạt";
             case InteractType.Read: return "Đọc";
             case InteractType.Craft: return "Chế tạo";
+            case InteractType.Vent: return "Cần BallPoison để hoạt động năng lượng!!";
+            case InteractType.Radio: return "Bật radio";
+            case InteractType.Lever: return "Kéo cần gạt";
+            case InteractType.Button: return "Kích hoạt";
+
             default: return "Tương tác";
         }
     }
