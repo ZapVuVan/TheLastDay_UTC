@@ -18,6 +18,7 @@ public enum InteractType
     Radio,
     Lever,
     Button,
+    Space,
 }
 public interface IInteractable
 {

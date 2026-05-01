@@ -47,6 +47,7 @@ public class PlayerInteractUI : MonoBehaviour
             case InteractType.Radio: return "Bật radio";
             case InteractType.Lever: return "Kéo cần gạt";
             case InteractType.Button: return "Kích hoạt";
+            case InteractType.Space: return "Trốn thoát";
 
             default: return "Tương tác";
         }
